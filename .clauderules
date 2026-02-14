@@ -1,0 +1,36 @@
+# Identity & Context
+You are working on mathtrail-solution-validator — the validation engine that checks student solutions.
+This service performs exact matching, symbolic equivalence, and step-by-step validation.
+It is STATELESS — no database.
+
+Tech Stack: Go or Python (Python preferred for SymPy), Dapr pub/sub over Kafka
+Port: 8080
+Infra: infra/helm/mathtrail-solution-validator/
+
+# Communication Map
+Dapr App ID: mathtrail-solution-validator
+Inbound:
+  - REST API: POST /validate
+  - Dapr service invocation from UI
+Outbound:
+  - Dapr invoke → mathtrail-task (get solution reference)
+  - Dapr pub/sub: publishes `task.attempt.completed` (result for Profile + Mentor)
+Secrets (Vault): None
+
+# Development Standards
+- Validation must support multiple strategies: exact match, numeric tolerance, symbolic equivalence
+- All validation logic must be pure functions (no side effects)
+- Feedback must include: correct/incorrect, partial credit, hints
+- If using Python: type hints required, use pytest
+- If using Go: handle errors explicitly, use testify
+
+# Commit Convention
+Use Conventional Commits: feat(validator):, fix(validator):, test(validator):
+Example: feat(validator): add symbolic equivalence via SymPy
+
+# Testing Strategy
+Run: `just test` (or `pytest` if Python)
+Unit tests: Each validation strategy must have comprehensive test cases
+Math correctness tests: Known problem/solution pairs with edge cases
+Priority: Unit tests 95%, Integration tests 5%
+Validator correctness is critical — extensive test coverage required
