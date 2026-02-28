@@ -10,11 +10,11 @@ Validation engine that checks student solutions using symbolic computation and r
 ## Tech Stack
 - **Language**: Go or Python (TBD — Python preferred for sympy)
 - **Math Engine**: SymPy (symbolic), custom rule engine
-- **Events**: Dapr pub/sub over Kafka
+- **Events**: Kafka pub/sub
 
-## API & Communication (Dapr)
-- **Inbound**: REST API (POST /validate), Dapr invocation from UI
-- **Outbound**: Dapr invoke → mathtrail-task (get solution reference)
+## API & Communication
+- **Inbound**: REST API (POST /validate), HTTP invocation from UI
+- **Outbound**: HTTP invoke → mathtrail-task (get solution reference)
 - **Publishes**: `task.attempt.completed` (result for Profile + Mentor)
 
 ## Data Persistence
